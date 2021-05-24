@@ -22,6 +22,10 @@ class Category(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created Date")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated Date")
 
+    class Meta:
+        verbose_name_plural = 'Categories'
+        ordering = ('-created_at', )
+
     def __str__(self):
         return self.title
 
@@ -39,6 +43,10 @@ class Product(models.Model):
     is_featured = models.BooleanField(verbose_name="Is Featured?")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created Date")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated Date")
+
+    class Meta:
+        verbose_name_plural = 'Products'
+        ordering = ('-created_at', )
 
     def __str__(self):
         return self.title

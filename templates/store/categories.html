@@ -5,16 +5,7 @@
 
       <!-- HERO SECTION-->
       <div class="container">
-        <section class="hero pb-3 bg-cover bg-center d-flex align-items-center" style="background: url({% static 'img/hero-jewlrey-banner.jpg' %})">
-          <div class="container py-5">
-            <div class="row px-4 px-lg-5">
-              <div class="col-lg-6">
-                <p class="text-muted small text-uppercase mb-2">New Inspiration 2020</p>
-                <h1 class="h2 text-uppercase mb-3">20% off on new season</h1><a class="btn btn-dark" href="{% url 'store:all-categories' %}">Browse collections</a>
-              </div>
-            </div>
-          </div>
-        </section>
+        
 
 
         <!-- CATEGORIES SECTION-->
@@ -27,7 +18,7 @@
           {% if categories %}
             {% for category in categories %}
 
-              <div class="col-md-4 mb-4 mb-md-0">
+              <div class="col-md-4 mb-4 mb-md-5">
                 <a class="category-item" href="{% url 'store:category-products' category.slug %}">
                   {% if category.category_image %}
                     <img class="img-fluid" src="{{ category.category_image.url }}" alt="{{ category.title }}">
@@ -44,51 +35,7 @@
         </section>
 
 
-        <!-- TRENDING PRODUCTS-->
-        <section class="py-5">
-          <header>
-            <p class="small text-muted small text-uppercase mb-1">Made the hard way</p>
-            <h2 class="h5 text-uppercase mb-4">Top trending products</h2>
-          </header>
-          <div class="row">
-
-            {% if products %}
-              {% for product in products %}
-              
-                <!-- PRODUCT-->
-                <div class="col-xl-3 col-lg-4 col-sm-6">
-                  <div class="product text-center">
-                    <div class="position-relative mb-3">
-
-                      <div class="badge text-white badge-"></div>
-                      
-                      <a class="d-block" href="{% url 'store:product-detail' product.slug %}">
-                        {% if product.product_image %}
-                          <img class="img-fluid w-100" src="{{ product.product_image.url }}" alt="{{product.title}}">
-                        {% else %}
-                          <img class="img-fluid w-100" src="{% static 'img/product-1.jpg' %}" alt="{{product.title}}">
-                        {% endif %}
-                      </a>
-
-                      <div class="product-overlay">
-                        <ul class="mb-0 list-inline">
-                          <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-outline-dark" href="#"><i class="far fa-heart"></i></a></li>
-                          <li class="list-inline-item m-0 p-0"><a class="btn btn-sm btn-dark" href="{% url 'store:add-to-cart' %}">Add to cart</a></li>
-                        </ul>
-                      </div>
-                    </div>
-                    <h6> <a class="reset-anchor" href="detail.html">{{ product.title }}</a></h6>
-                    <p class="small text-muted">${{product.price}}</p>
-                  </div>
-                </div>
-
-              {% endfor %}
-            {% endif %}
-
-            
-
-          </div>
-        </section>
+        
 
 
         <!-- SERVICES-->
