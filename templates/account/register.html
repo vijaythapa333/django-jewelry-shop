@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block content %}
+
+      <div class="container py-5">
+        <div class="col-md-8 offset-2">
+
+        <h1 class="mb-5">Create Your Account</h1>
+        
+        
+        <div class="card mb-4" id="forms">
+          <div class="card-header">
+            <small>
+            With a this account, you can save time during checkout, access your shopping bag from any device and view your order history.
+            </small>
+          </div>
+          <div class="card-body">
+
+            {% include 'partials/_messages.html' %}
+
+            <form method="post" action="{% url 'store:register_save' %}">
+              <fieldset>
+                {% csrf_token %}
+
+                {% for fm in form %}
+                    <div class="form-group">
+                        {{fm.label_tag}}
+                        {{fm}}
+                        <small class="text-danger">{{fm.errors|striptags}}</small>
+                    </div>
+                {% endfor %}
+                <button class="btn btn-primary" type="submit">Submit</button>
+              </fieldset>
+
+              {% if form.non_field_errors %}
+                {% for error in non_field_errors %}
+                    <p class="alert alert-danger my-3">
+                        {{error}}
+                    </p>
+                {% endfor %}
+              {% endif %}
+
+            </form>
+
+            <hr>
+
+            Already have an account? <a href="{% url 'store:login' %}">Log In </a>
+            
+          </div>
+        </div>
+
+        </div>       
+      </div>
+{% endblock content %}

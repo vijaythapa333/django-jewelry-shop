@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+    {% block content %}
+
+      <div class="container py-5">
+        <div class="col-md-8 offset-2">
+
+        <h1 class="mb-5">Log In to Your Account</h1>
+        
+        
+        <div class="card mb-4" id="forms">
+          
+          <div class="card-body">
+            <form>
+              <fieldset>
+                <div class="form-group">
+                  <label for="exampleInputEmail">Email address</label>
+                  <input class="form-control" id="exampleInputEmail" type="text" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword">Password</label>
+                  <input class="form-control" id="exampleInputPassword" type="password" placeholder="Password">
+                </div>
+                <button class="btn btn-primary" type="submit">Submit</button>
+              </fieldset>
+            </form>
+
+            <hr>
+
+            Forgot Password? <a href="{% url 'store:login' %}">Reset Now</a> <br>
+            New Member? <a href="{% url 'store:register' %}">Create an Account</a> 
+            
+          </div>
+        </div>
+
+        </div>       
+      </div>
+{% endblock content %}

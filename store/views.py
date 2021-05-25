@@ -1,5 +1,7 @@
 from store.models import Category, Product
 from django.shortcuts import redirect, render, get_object_or_404
+from .forms import RegistrationForm
+from django.contrib import messages
 
 # Create your views here.
 
@@ -39,6 +41,27 @@ def category_products(request, slug):
         'categories': categories,
     }
     return render(request, 'store/category_products.html', context)
+
+
+# Authentication Starts Here
+
+
+def register(request):
+    form = RegistrationForm()
+    return render(request, 'account/register.html', {'form': form})
+
+
+def register_save(request):
+    form = RegistrationForm(request.POST)
+    # Error on Saving Data / Might need to use Class Based Views
+    if form.is_valid():
+        messages.success(request, 'Congratulations! Registration Successful!')
+        form.save()
+    return render(request, 'account/register.html', {'form': form})
+
+
+def login(request):
+    return render(request, 'account/login.html')
 
 
 def add_to_cart(request):
