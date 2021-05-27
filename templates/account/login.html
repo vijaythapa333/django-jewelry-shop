@@ -30,12 +30,16 @@
               </fieldset>
 
               {% if form.non_field_errors %}
-                {% for error in non_field_errors %}
+                {% for error in form.non_field_errors %}
                     <p class="alert alert-danger my-3">
                         {{error}}
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                     </p>
                 {% endfor %}
               {% endif %}
+
 
             </form>
 
