@@ -20,6 +20,7 @@ urlpatterns = [
     path('accounts/login/', auth_views.LoginView.as_view(template_name='account/login.html', authentication_form=LoginForm), name="login"),
     path('accounts/profile/', views.profile, name="profile"),
     path('accounts/add-address/', views.AddressView.as_view(), name="add-address"),
+    path('accounts/logout/', auth_views.LogoutView.as_view(next_page='store:login'), name="logout"),
 
     path('product/test/', views.test, name="test"),
 
