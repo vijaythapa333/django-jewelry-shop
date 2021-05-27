@@ -9,7 +9,7 @@ class Address(models.Model):
     state = models.CharField(max_length=150, verbose_name="State")
 
     def __str__(self):
-        return self.user
+        return self.locality
 
 
 class Category(models.Model):

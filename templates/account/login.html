@@ -12,18 +12,31 @@
         <div class="card mb-4" id="forms">
           
           <div class="card-body">
-            <form>
+              
+            {% include 'partials/_messages.html' %}
+
+            <form method="post" action="">
               <fieldset>
-                <div class="form-group">
-                  <label for="exampleInputEmail">Email address</label>
-                  <input class="form-control" id="exampleInputEmail" type="text" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputPassword">Password</label>
-                  <input class="form-control" id="exampleInputPassword" type="password" placeholder="Password">
-                </div>
-                <button class="btn btn-primary" type="submit">Submit</button>
+                {% csrf_token %}
+
+                {% for fm in form %}
+                    <div class="form-group">
+                        {{fm.label_tag}}
+                        {{fm}}
+                        <small class="text-danger">{{fm.errors|striptags}}</small>
+                    </div>
+                {% endfor %}
+                <button class="btn btn-primary" type="submit">Login</button>
               </fieldset>
+
+              {% if form.non_field_errors %}
+                {% for error in non_field_errors %}
+                    <p class="alert alert-danger my-3">
+                        {{error}}
+                    </p>
+                {% endfor %}
+              {% endif %}
+
             </form>
 
             <hr>

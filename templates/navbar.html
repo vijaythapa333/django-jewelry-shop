@@ -28,13 +28,15 @@
                   <!-- Link--><a class="nav-link" href="{% url 'store:home' %}">Contact</a>
                 </li>
               </ul>
-              <ul class="navbar-nav ml-auto">               
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:cart' %}"> <i class="fas fa-dolly-flatbed mr-1 text-gray"></i>Cart<small class="text-gray">(2)</small></a></li>
-                <li class="nav-item"><a class="nav-link" href="#"> <i class="far fa-heart mr-1"></i><small class="text-gray"> (0)</small></a></li>
-                <li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-user-alt mr-1 text-gray"></i>My Account</a></li>
-
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:login' %}">Login</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'store:register' %}">Create Account</a></li>
+              <ul class="navbar-nav ml-auto"> 
+                {% if request.user.is_authenticated %}           
+                  <li class="nav-item"><a class="nav-link" href="{% url 'store:cart' %}"> <i class="fas fa-dolly-flatbed mr-1 text-gray"></i>Cart<small class="text-gray">(2)</small></a></li>
+                  <li class="nav-item"><a class="nav-link" href="#"> <i class="far fa-heart mr-1"></i><small class="text-gray"> (0)</small></a></li>
+                  <li class="nav-item"><a class="nav-link" href="#"> <i class="fas fa-user-alt mr-1 text-gray"></i>My Account</a></li>
+                {% else %}
+                  <li class="nav-item"><a class="nav-link" href="{% url 'store:login' %}">Login</a></li>
+                  <li class="nav-item"><a class="nav-link" href="{% url 'store:register' %}">Create Account</a></li>
+                {% endif %}   
               </ul>
             </div>
           </nav>

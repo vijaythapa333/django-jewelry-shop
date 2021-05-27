@@ -1,7 +1,8 @@
-from store.models import Category, Product
+from store.models import Address, Category, Product
 from django.shortcuts import redirect, render, get_object_or_404
-from .forms import RegistrationForm
+from .forms import RegistrationForm, AddressForm
 from django.contrib import messages
+from django.views import View
 
 # Create your views here.
 
@@ -45,23 +46,41 @@ def category_products(request, slug):
 
 # Authentication Starts Here
 
+class RegistrationView(View):
+    def get(self, request):
+        form = RegistrationForm()
+        return render(request, 'account/register.html', {'form': form})
+    
+    def post(self, request):
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            messages.success(request, "Congratulations! Registration Successful!")
+            form.save()
+        return render(request, 'account/register.html', {'form': form})
+        
 
-def register(request):
-    form = RegistrationForm()
-    return render(request, 'account/register.html', {'form': form})
+def profile(request):
+    addresses = Address.objects.filter(user=request.user)
+    return render(request, 'account/profile.html', {'addresses':addresses})
+
+class AddressView(View):
+    def get(self, request):
+        form = AddressForm()
+        return render(request, 'account/add_address.html', {'form': form})
+
+    def post(self, request):
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            user=request.user
+            locality = form.cleaned_data['locality']
+            city = form.cleaned_data['city']
+            state = form.cleaned_data['state']
+            reg = Address(user=user, locality=locality, city=city, state=state)
+            reg.save()
+            messages.success(request, "New Address Added Successfully.")
+        return redirect('store:profile')
 
 
-def register_save(request):
-    form = RegistrationForm(request.POST)
-    # Error on Saving Data / Might need to use Class Based Views
-    if form.is_valid():
-        messages.success(request, 'Congratulations! Registration Successful!')
-        form.save()
-    return render(request, 'account/register.html', {'form': form})
-
-
-def login(request):
-    return render(request, 'account/login.html')
 
 
 def add_to_cart(request):
