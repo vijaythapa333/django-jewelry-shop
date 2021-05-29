@@ -1,4 +1,4 @@
-from store.forms import LoginForm
+from store.forms import LoginForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
@@ -21,6 +21,9 @@ urlpatterns = [
     path('accounts/profile/', views.profile, name="profile"),
     path('accounts/add-address/', views.AddressView.as_view(), name="add-address"),
     path('accounts/logout/', auth_views.LogoutView.as_view(next_page='store:login'), name="logout"),
+
+    path('accounts/password-change/', auth_views.PasswordChangeView.as_view(template_name='account/password_change.html', form_class=PasswordChangeForm, success_url='/accounts/password-change-done/'), name="password-change"),
+    path('accounts/password-change-done/', auth_views.PasswordChangeDoneView.as_view(template_name='account/password_change_done.html'), name="password-change-done"),
 
     path('product/test/', views.test, name="test"),
 
