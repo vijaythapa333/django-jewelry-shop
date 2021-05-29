@@ -21,6 +21,8 @@
             </div>
           </div>
         </section>
+
+        {% if cart_products %}
         <section class="py-5">
           <h2 class="h5 text-uppercase mb-4">Shopping cart</h2>
           <div class="row">
@@ -38,20 +40,29 @@
                     </tr>
                   </thead>
                   <tbody>
+
+                    {% for cart_product in cart_products %}
                     <tr>
                       <th class="pl-0 border-0" scope="row">
-                        <div class="media align-items-center"><a class="reset-anchor d-block animsition-link" href="detail.html"><img src="{% static 'img/product-detail-3.jpg' %}" alt="..." width="70"/></a>
-                          <div class="media-body ml-3"><strong class="h6"><a class="reset-anchor animsition-link" href="detail.html">Red digital smartwatch</a></strong></div>
+                        <div class="media align-items-center">
+
+                          {% if cart_product.product.product_image %}
+                            <a class="reset-anchor d-block animsition-link" href="{% url 'store:product-detail' cart_product.product.slug %}"><img src="{{cart_product.product.product_image.url}}" alt="{{cart_product.product.title}}" width="70"/></a>
+                          {% else %}
+                            <a class="reset-anchor d-block animsition-link" href="{% url 'store:product-detail' cart_product.product.slug %}"><img src="{% static 'img/product-detail-3.jpg' %}" alt="{{cart_product.product.title}}" width="70"/></a>
+                          {% endif %}
+
+                          <div class="media-body ml-3"><strong class="h6"><a class="reset-anchor animsition-link" href="{% url 'store:product-detail' cart_product.product.slug %}">{{cart_product.product.title}}</a></strong></div>
                         </div>
                       </th>
                       <td class="align-middle border-0">
-                        <p class="mb-0 small">$250</p>
+                        <p class="mb-0 small">${{cart_product.product.price}}</p>
                       </td>
                       <td class="align-middle border-0">
                         <div class="border d-flex align-items-center justify-content-between px-3"><span class="small text-uppercase text-gray headings-font-family">Quantity</span>
                           <div class="quantity">
                             <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
-                            <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" value="1"/>
+                            <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" value="{{cart_product.quantity}}"/>
                             <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
                           </div>
                         </div>
@@ -61,36 +72,15 @@
                       </td>
                       <td class="align-middle border-0"><a class="reset-anchor" href="#"><i class="fas fa-trash-alt small text-muted"></i></a></td>
                     </tr>
-                    <tr>
-                      <th class="pl-0 border-light" scope="row">
-                        <div class="media align-items-center"><a class="reset-anchor d-block animsition-link" href="detail.html"><img src="{% static 'img/product-detail-2.jpg' %}" alt="..." width="70"/></a>
-                          <div class="media-body ml-3"><strong class="h6"><a class="reset-anchor animsition-link" href="detail.html">Apple watch</a></strong></div>
-                        </div>
-                      </th>
-                      <td class="align-middle border-light">
-                        <p class="mb-0 small">$250</p>
-                      </td>
-                      <td class="align-middle border-light">
-                        <div class="border d-flex align-items-center justify-content-between px-3"><span class="small text-uppercase text-gray headings-font-family">Quantity</span>
-                          <div class="quantity">
-                            <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
-                            <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" value="1"/>
-                            <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="align-middle border-light">
-                        <p class="mb-0 small">$250</p>
-                      </td>
-                      <td class="align-middle border-light"><a class="reset-anchor" href="#"><i class="fas fa-trash-alt small text-muted"></i></a></td>
-                    </tr>
+                    {% endfor %}
+
                   </tbody>
                 </table>
               </div>
               <!-- CART NAV-->
               <div class="bg-light px-4 py-3">
                 <div class="row align-items-center text-center">
-                  <div class="col-md-6 mb-3 mb-md-0 text-md-left"><a class="btn btn-link p-0 text-dark btn-sm" href="shop.html"><i class="fas fa-long-arrow-alt-left mr-2"> </i>Continue shopping</a></div>
+                  <div class="col-md-6 mb-3 mb-md-0 text-md-left"><a class="btn btn-link p-0 text-dark btn-sm" href="{% url 'store:home' %}"><i class="fas fa-long-arrow-alt-left mr-2"> </i>Continue shopping</a></div>
                   <div class="col-md-6 text-md-right"><a class="btn btn-outline-dark btn-sm" href="checkout.html">Procceed to checkout<i class="fas fa-long-arrow-alt-right ml-2"></i></a></div>
                 </div>
               </div>
@@ -116,7 +106,18 @@
                 </div>
               </div>
             </div>
+
           </div>
         </section>
+        
+        {% else %}
+
+          <div class="text-center py-5">
+            <h3 class="mb-3">Your cart is empty.</h3>
+            <a href="{% url 'store:home' %}"><i class="fas fa-long-arrow-alt-left mr-2"> </i>Continue shopping</a>
+          </div>
+
+        {% endif %}
+
       </div>
       {% endblock content %}

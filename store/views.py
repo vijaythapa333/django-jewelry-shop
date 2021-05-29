@@ -1,4 +1,4 @@
-from store.models import Address, Category, Product
+from store.models import Address, Cart, Category, Product
 from django.shortcuts import redirect, render, get_object_or_404
 from .forms import RegistrationForm, AddressForm
 from django.contrib import messages
@@ -81,14 +81,18 @@ class AddressView(View):
         return redirect('store:profile')
 
 
-
-
 def add_to_cart(request):
-    return render(request, 'store/cart.html')
+    user = request.user
+    product_id = request.GET.get('prod_id')
+    product = get_object_or_404(Product, id=product_id)
+    Cart(user=user, product=product).save()
+    return redirect('store:cart')
 
 
 def cart(request):
-    return render(request, 'store/cart.html')
+    user = request.user
+    cart_products = Cart.objects.filter(user=user)
+    return render(request, 'store/cart.html', {'cart_products':cart_products})
 
 
 def checkout(request):
