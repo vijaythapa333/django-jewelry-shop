@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .forms import RegistrationForm, AddressForm
 from django.contrib import messages
 from django.views import View
+from django.db.models import Q
 
 # Create your views here.
 
@@ -93,6 +94,15 @@ def cart(request):
     user = request.user
     cart_products = Cart.objects.filter(user=user)
     return render(request, 'store/cart.html', {'cart_products':cart_products})
+
+
+def remove_cart(request, cart_id):
+    if request.method == 'GET':
+        user = request.user
+        c = get_object_or_404(Cart, id=cart_id)
+        c.delete()
+        messages.success(request, "Product removed from Cart.")
+    return redirect('store:cart')
 
 
 def checkout(request):

@@ -25,6 +25,9 @@
         {% if cart_products %}
         <section class="py-5">
           <h2 class="h5 text-uppercase mb-4">Shopping cart</h2>
+
+          {% include 'partials/_messages.html' %}
+
           <div class="row">
             <div class="col-lg-8 mb-4 mb-lg-0">
               <!-- CART TABLE-->
@@ -70,7 +73,7 @@
                       <td class="align-middle border-0">
                         <p class="mb-0 small">$250</p>
                       </td>
-                      <td class="align-middle border-0"><a class="reset-anchor" href="#"><i class="fas fa-trash-alt small text-muted"></i></a></td>
+                      <td class="align-middle border-0"><a class="reset-anchor" href="{% url 'store:remove-cart' cart_product.id %}"><i class="fas fa-trash-alt small text-muted"></i></a></td>
                     </tr>
                     {% endfor %}
 
