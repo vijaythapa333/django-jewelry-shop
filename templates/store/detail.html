@@ -33,16 +33,19 @@
               <h1>{{product.title}}</h1>
               <p class="text-muted lead">${{product.price}}</p>
               <p class="text-small mb-4">{{product.short_description}}</p>
+
               <div class="row align-items-stretch mb-4">
+                
                 <div class="col-sm-5 pr-sm-0">
                   <div class="border d-flex align-items-center justify-content-between py-1 px-3 bg-white border-white"><span class="small text-uppercase text-gray mr-4 no-select">Quantity</span>
                     <div class="quantity">
                       <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
-                      <input class="form-control border-0 shadow-0 p-0" type="text" value="1">
+                      <input name="quantity" class="form-control border-0 shadow-0 p-0" type="text" value="1">
                       <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
                     </div>
                   </div>
                 </div>
+
                 <div class="col-sm-3 pl-sm-0">
                   {% comment %} <a class="btn btn-dark btn-sm btn-block h-100 d-flex align-items-center justify-content-center px-0" href="{% url 'store:add-to-cart' %}">Add to cart</a> {% endcomment %}
                   

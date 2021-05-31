@@ -65,7 +65,7 @@
                       <td class="align-middle border-0">
                         <div class="border d-flex align-items-center justify-content-between px-3"><span class="small text-uppercase text-gray headings-font-family">Quantity</span>
                           <div class="quantity">
-                            <a href="{% url 'store:minus-cart' cart_product.id %}" class="inc-btn p-0 ml-2"><i class="fas fa-minus"></i></a>
+                            <a href="{% url 'store:minus-cart' cart_product.id %}" class="dec-btn p-0 ml-2"><i class="fas fa-minus"></i></a>
                             {% comment %} <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button> {% endcomment %}
                             <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" value="{{cart_product.quantity}}"/>
                             {% comment %} <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button> {% endcomment %}
@@ -103,15 +103,34 @@
                     <li class="d-flex align-items-center justify-content-between mb-4"><strong class="text-uppercase small font-weight-bold">Total</strong><span>${{total_amount|intcomma}}</span></li>
                     <li>
 
-                      <form action="#">
+                      {% comment %} <form action="#">
                         <div class="form-group mb-0">
                           <input class="form-control" type="text" placeholder="Enter your coupon">
                           <button class="btn btn-dark btn-sm btn-block" type="submit"> <i class="fas fa-gift mr-2"></i>Apply coupon</button>
                         </div>
-                      </form>
+                      </form> {% endcomment %}
 
                     </li>
                   </ul>
+
+                  
+                  <h5 class="text-uppercase my-5">Select Shipping Address</h5>
+                  
+                  <form action="{% url 'store:checkout' %}" id="myform">
+
+                    {% if addresses %}
+                      {% for address in addresses %}
+                        <div class="mb-3">
+                        <input type="radio" name="address" id="{{address.id}}"> <strong>Address {{forloop.counter}}</strong> <br>
+                        ( {{address.locality}}, {{address.city}}, {{address.state}} )
+                        </div>
+                      {% endfor %}
+                    {% endif %}
+
+                    <button type="submit" class="btn btn-dark btn-lg btn-block" type="submit"> <i class="fas fa-dollar-sign mr-2"></i>Checkout</button>
+
+                  </form>
+
                 </div>
               </div>
             </div>

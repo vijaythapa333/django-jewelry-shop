@@ -1,4 +1,5 @@
 import django
+from django.contrib.auth.models import User
 from store.models import Address, Cart, Category, Product
 from django.shortcuts import redirect, render, get_object_or_404
 from .forms import RegistrationForm, AddressForm
@@ -90,11 +91,18 @@ class AddressView(View):
 
 
 @login_required
+def remove_address(request, id):
+    a = get_object_or_404(Address, user=request.user, id=id)
+    a.delete()
+    messages.success(request, "Address removed.")
+    return redirect('store:profile')
+
+@login_required
 def add_to_cart(request):
     user = request.user
     product_id = request.GET.get('prod_id')
     product = get_object_or_404(Product, id=product_id)
-    
+
     # Check whether the Product is alread in Cart or Not
     item_already_in_cart = Cart.objects.filter(product=product_id, user=user)
     if item_already_in_cart:
@@ -122,11 +130,15 @@ def cart(request):
             temp_amount = (p.quantity * p.product.price)
             amount += temp_amount
 
+    # Customer Addresses
+    addresses = Address.objects.filter(user=user)
+
     context = {
         'cart_products': cart_products,
         'amount': amount,
         'shipping_amount': shipping_amount,
-        'total_amount': amount + shipping_amount
+        'total_amount': amount + shipping_amount,
+        'addresses': addresses,
     }
     return render(request, 'store/cart.html', context)
 

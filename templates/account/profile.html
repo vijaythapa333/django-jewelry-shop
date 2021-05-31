@@ -13,6 +13,7 @@
           <p><a class="btn btn-primary btn-large" href="{% url 'store:add-address' %}">Add Address »</a> <a class="btn btn-outline-primary btn-large" href="#">My Orders »</a></p>
         </div>
 
+
         <div class="row">
 
           <div class="col-lg-6">
@@ -21,7 +22,10 @@
               <div class="card-body">
                 {% if addresses %}
                     {% for address in addresses %}
-                        <h4 class="mb-3">Address {{forloop.counter}}</h4>
+                        <h4 class="mb-3">Address {{forloop.counter}}</h4> 
+                        
+                        <span class="float-right"><a href="{% url 'store:remove-address' address.id %}"><i class="fas fa-trash-alt small text-muted"></i></a></span>
+
                         <p>
                             <strong>Locality: </strong>{{address.locality}} <br>
                             <strong>City: </strong>{{address.city}} <br>
