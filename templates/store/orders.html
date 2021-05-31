@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load humanize %}
+
+    {% block content %}
+
+      <div class="container py-5">
+
+
+        <div class="row">
+
+          
+
+          <div class="col-lg-12">
+            <div class="card mb-4" id="tables">
+              <div class="card-header text-center">Orders</div>
+              <div class="card-body">
+                <table class="table table-hover">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Item</th>
+                      <th>Image</th>
+                      <th>Qty.</th>
+                      <th>Ordered Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {% if orders %}
+
+                    {% for order in orders %}
+                    <tr>
+                      <td>{{forloop.counter}}</td>
+                      <td>{{order.product.title}}</td>
+                      <td>
+                        {% if order.product.product_image %}
+                          <img src="{{order.product.product_image.url}}" alt="{{order.product.product_ttile}}" style="width:150px;">
+                        {% endif %}
+                      </td>
+                      <td>{{order.quantity}}</td>
+                      <td>{{order.ordered_date|naturaltime}}</td>
+                      <td>
+
+                        {% if order.status == 'Pending' %}
+                        
+                        {% endif %}
+
+                        {% if order.status == 'Accepted' %}
+                        <div class="bg-light border border-primary">
+                            <div class="p-3 bg-primary" style="width:0;"></div>
+                        </div>
+                        {% endif %}
+
+                        {% if order.status == 'Packed' %}
+                        <div class="bg-light border border-primary">
+                            <div class="p-3 bg-primary" style="width:40%;"></div>
+                        </div>
+                        {% endif %}
+                        
+                        
+                        {% if order.status == 'On The Way' %}
+                        <div class="bg-light border border-primary">
+                            <div class="p-3 bg-primary" style="width:70%;"></div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if order.status == 'Delivered' %}
+                        <div class="bg-light border border-primary">
+                            <div class="p-3 bg-primary" style="width:100%;"></div>
+                        </div>
+                        {% endif %}
+
+                        {% if order.status == 'Cancelled' %}
+                        <div class="bg-light border border-danger">
+                            <div class="p-3 bg-danger" style="width:100%;"></div>
+                        </div>
+                        {% endif %}
+                        
+                        {{order.status}}
+                      </td>
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+                    
+                  </tbody>
+                </table>
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+    
+        
+        
+      </div>
+{% endblock content %}

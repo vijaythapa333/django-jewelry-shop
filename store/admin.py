@@ -34,8 +34,16 @@ class CartAdmin(admin.ModelAdmin):
     search_fields = ('user', 'product')
 
 
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'quantity', 'status', 'ordered_date')
+    list_editable = ('quantity', 'status')
+    list_filter = ('status', 'ordered_date')
+    list_per_page = 20
+    search_fields = ('user', 'product')
+
+
 admin.site.register(Address, AddressAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Cart, CartAdmin)
-admin.site.register(Order)
+admin.site.register(Order, OrderAdmin)
