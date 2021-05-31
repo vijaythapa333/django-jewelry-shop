@@ -64,14 +64,16 @@
                       <td class="align-middle border-0">
                         <div class="border d-flex align-items-center justify-content-between px-3"><span class="small text-uppercase text-gray headings-font-family">Quantity</span>
                           <div class="quantity">
-                            <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button>
+                            <a href="{% url 'store:minus-cart' cart_product.id %}" class="inc-btn p-0 ml-2"><i class="fas fa-minus"></i></a>
+                            {% comment %} <button class="dec-btn p-0"><i class="fas fa-caret-left"></i></button> {% endcomment %}
                             <input class="form-control form-control-sm border-0 shadow-0 p-0" type="text" value="{{cart_product.quantity}}"/>
-                            <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button>
+                            {% comment %} <button class="inc-btn p-0"><i class="fas fa-caret-right"></i></button> {% endcomment %}
+                            <a href="{% url 'store:plus-cart' cart_product.id %}" class="inc-btn p-0"><i class="fas fa-plus"></i></a>
                           </div>
                         </div>
                       </td>
                       <td class="align-middle border-0">
-                        <p class="mb-0 small">$250</p>
+                        <p class="mb-0 small">${{cart_product.total_price}}</p>
                       </td>
                       <td class="align-middle border-0"><a class="reset-anchor" href="{% url 'store:remove-cart' cart_product.id %}"><i class="fas fa-trash-alt small text-muted"></i></a></td>
                     </tr>
