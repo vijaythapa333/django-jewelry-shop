@@ -26,9 +26,16 @@ class ProductAdmin(admin.ModelAdmin):
     search_fields = ('title', 'category', 'short_description')
     prepopulated_fields = {"slug": ("title", )}
 
+class CartAdmin(admin.ModelAdmin):
+    list_display = ('user', 'product', 'quantity', 'created_at')
+    list_editable = ('quantity',)
+    list_filter = ('created_at',)
+    list_per_page = 20
+    search_fields = ('user', 'product')
+
 
 admin.site.register(Address, AddressAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Product, ProductAdmin)
-admin.site.register(Cart)
+admin.site.register(Cart, CartAdmin)
 admin.site.register(Order)
