@@ -1,9 +1,13 @@
+import django
 from store.models import Address, Cart, Category, Product
 from django.shortcuts import redirect, render, get_object_or_404
 from .forms import RegistrationForm, AddressForm
 from django.contrib import messages
 from django.views import View
 import decimal
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator # for Class Based Views
+
 
 # Create your views here.
 
@@ -60,10 +64,13 @@ class RegistrationView(View):
         return render(request, 'account/register.html', {'form': form})
         
 
+@login_required
 def profile(request):
     addresses = Address.objects.filter(user=request.user)
     return render(request, 'account/profile.html', {'addresses':addresses})
 
+
+@method_decorator(login_required, name='dispatch')
 class AddressView(View):
     def get(self, request):
         form = AddressForm()
@@ -82,14 +89,25 @@ class AddressView(View):
         return redirect('store:profile')
 
 
+@login_required
 def add_to_cart(request):
     user = request.user
     product_id = request.GET.get('prod_id')
     product = get_object_or_404(Product, id=product_id)
-    Cart(user=user, product=product).save()
+    
+    # Check whether the Product is alread in Cart or Not
+    item_already_in_cart = Cart.objects.filter(product=product_id, user=user)
+    if item_already_in_cart:
+        cp = get_object_or_404(Cart, product=product_id, user=user)
+        cp.quantity += 1
+        cp.save()
+    else:
+        Cart(user=user, product=product).save()
+    
     return redirect('store:cart')
 
 
+@login_required
 def cart(request):
     user = request.user
     cart_products = Cart.objects.filter(user=user)
@@ -113,6 +131,7 @@ def cart(request):
     return render(request, 'store/cart.html', context)
 
 
+@login_required
 def remove_cart(request, cart_id):
     if request.method == 'GET':
         c = get_object_or_404(Cart, id=cart_id)
@@ -121,6 +140,7 @@ def remove_cart(request, cart_id):
     return redirect('store:cart')
 
 
+@login_required
 def plus_cart(request, cart_id):
     if request.method == 'GET':
         cp = get_object_or_404(Cart, id=cart_id)
@@ -129,6 +149,7 @@ def plus_cart(request, cart_id):
     return redirect('store:cart')
 
 
+@login_required
 def minus_cart(request, cart_id):
     if request.method == 'GET':
         cp = get_object_or_404(Cart, id=cart_id)
@@ -141,6 +162,7 @@ def minus_cart(request, cart_id):
     return redirect('store:cart')
 
 
+@login_required
 def checkout(request):
     return render(request, 'store/checkout.html')
 
