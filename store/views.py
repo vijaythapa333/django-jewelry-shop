@@ -3,7 +3,7 @@ from django.shortcuts import redirect, render, get_object_or_404
 from .forms import RegistrationForm, AddressForm
 from django.contrib import messages
 from django.views import View
-from django.db.models import Q
+import decimal
 
 # Create your views here.
 
@@ -93,7 +93,24 @@ def add_to_cart(request):
 def cart(request):
     user = request.user
     cart_products = Cart.objects.filter(user=user)
-    return render(request, 'store/cart.html', {'cart_products':cart_products})
+
+    # Display Total on Cart Page
+    amount = decimal.Decimal(0)
+    shipping_amount = decimal.Decimal(10)
+    # using list comprehension to calculate total amount based on quantity and shipping
+    cp = [p for p in Cart.objects.all() if p.user==user]
+    if cp:
+        for p in cp:
+            temp_amount = (p.quantity * p.product.price)
+            amount += temp_amount
+
+    context = {
+        'cart_products': cart_products,
+        'amount': amount,
+        'shipping_amount': shipping_amount,
+        'total_amount': amount + shipping_amount
+    }
+    return render(request, 'store/cart.html', context)
 
 
 def remove_cart(request, cart_id):
@@ -115,8 +132,12 @@ def plus_cart(request, cart_id):
 def minus_cart(request, cart_id):
     if request.method == 'GET':
         cp = get_object_or_404(Cart, id=cart_id)
-        cp.quantity -= 1
-        cp.save()
+        # Remove the Product if the quantity is already 1
+        if cp.quantity == 1:
+            cp.delete()
+        else:
+            cp.quantity -= 1
+            cp.save()
     return redirect('store:cart')
 
 

@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
     {% block content %}
       <div class="container">
@@ -73,7 +74,7 @@
                         </div>
                       </td>
                       <td class="align-middle border-0">
-                        <p class="mb-0 small">${{cart_product.total_price}}</p>
+                        <p class="mb-0 small">${{cart_product.total_price|intcomma}}</p>
                       </td>
                       <td class="align-middle border-0"><a class="reset-anchor" href="{% url 'store:remove-cart' cart_product.id %}"><i class="fas fa-trash-alt small text-muted"></i></a></td>
                     </tr>
@@ -96,16 +97,19 @@
                 <div class="card-body">
                   <h5 class="text-uppercase mb-4">Cart total</h5>
                   <ul class="list-unstyled mb-0">
-                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Subtotal</strong><span class="text-muted small">$250</span></li>
+                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Subtotal</strong><span class="text-muted small">${{amount|intcomma}}</span></li>
+                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Shipping Charge</strong><span class="text-muted small">+ ${{shipping_amount}}</span></li>
                     <li class="border-bottom my-2"></li>
-                    <li class="d-flex align-items-center justify-content-between mb-4"><strong class="text-uppercase small font-weight-bold">Total</strong><span>$250</span></li>
+                    <li class="d-flex align-items-center justify-content-between mb-4"><strong class="text-uppercase small font-weight-bold">Total</strong><span>${{total_amount|intcomma}}</span></li>
                     <li>
+
                       <form action="#">
                         <div class="form-group mb-0">
                           <input class="form-control" type="text" placeholder="Enter your coupon">
                           <button class="btn btn-dark btn-sm btn-block" type="submit"> <i class="fas fa-gift mr-2"></i>Apply coupon</button>
                         </div>
                       </form>
+
                     </li>
                   </ul>
                 </div>
