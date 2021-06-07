@@ -34,6 +34,10 @@
 
                         <hr>
                     {% endfor %}
+                {% else %}
+                <div class="text-danger">
+                  Address not Added.
+                </div>
                 {% endif %}
                 
               </div>
@@ -53,40 +57,23 @@
                     </tr>
                   </thead>
                   <tbody>
+                    {% if orders %}
+                      {% for order in orders %}
+                        <tr>
+                          <td>{{forloop.counter}}</td>
+                          <td>{{order.product.title}}</td>
+                          <td>
+                            {{order.status}}
+                          </td>
+                        </tr>
+                      {% endfor %}
+                    {% else %}
                     <tr>
-                      <td>1</td>
-                      <td>Michael</td>
-                      <td>
-                        <div class="bg-light border border-primary">
-                            <div class="p-3 bg-primary" style="width:50%;"></div>
-                        </div>
-                      </td>
+                      <td class="text-danger" colspan="3">You've not Ordered anything yet.</td>
                     </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>Lucille</td>
-                      <td>Do you like them?</td>
-                    </tr>
-                    <tr class="success">
-                      <td>3</td>
-                      <td>Success</td>
-                      <td></td>
-                    </tr>
-                    <tr class="danger">
-                      <td>4</td>
-                      <td>Danger</td>
-                      <td></td>
-                    </tr>
-                    <tr class="warning">
-                      <td>5</td>
-                      <td>Warning</td>
-                      <td></td>
-                    </tr>
-                    <tr class="active">
-                      <td>6</td>
-                      <td>Active</td>
-                      <td></td>
-                    </tr>
+                    {% endif %}
+                    
+                    
                   </tbody>
                 </table>
                 

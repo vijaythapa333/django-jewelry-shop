@@ -127,7 +127,11 @@
                       {% endfor %}
                     {% endif %}
 
-                    <button type="submit" class="btn btn-dark btn-lg btn-block" type="submit"> <i class="fas fa-dollar-sign mr-2"></i>Checkout</button>
+                    <!-- Set up a container element for the button -->
+                    <div class="text-end" id="paypal-button-container"></div>
+
+                    {% comment %} For Cash on Delivery {% endcomment %}
+                    <button type="submit" class="btn btn-dark btn-lg btn-outline-dark" type="submit"> <i class="fas fa-dollar-sign mr-2"></i>Cash on Delivery</button>
 
                   </form>
 
@@ -149,3 +153,37 @@
 
       </div>
       {% endblock content %}
+
+      {% block payment-gateway %}
+        <!-- Include the PayPal JavaScript SDK -->
+    <script src="https://www.paypal.com/sdk/js?client-id=YOUR-PAYPAL-CLIENT-ID&currency=USD"></script>
+
+    <script>
+        // Render the PayPal button into #paypal-button-container
+        paypal.Buttons({
+
+            // Set up the transaction
+            createOrder: function(data, actions) {
+                return actions.order.create({
+                    purchase_units: [{
+                        amount: {
+                            value: '{{total_amount}}'
+                        }
+                    }]
+                });
+            },
+
+            // Finalize the transaction
+            onApprove: function(data, actions) {
+                return actions.order.capture().then(function(details) {
+                    // Show a success message to the buyer
+                    alert('Transaction completed by ' + details.payer.name.given_name + '!');
+                    // Savind Order in Database after Payment Success
+                    document.getElementById('myform').submit();
+                });
+            }
+
+
+        }).render('#paypal-button-container');
+    </script>
+      {% endblock payment-gateway %}

@@ -60,7 +60,7 @@ class Cart(models.Model):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated Date")
 
     def __str__(self):
-        return self.user
+        return str(self.user)
     
     # Creating Model Property to calculate Quantity x Price
     @property

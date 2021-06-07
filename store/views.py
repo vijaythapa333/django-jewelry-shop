@@ -68,7 +68,8 @@ class RegistrationView(View):
 @login_required
 def profile(request):
     addresses = Address.objects.filter(user=request.user)
-    return render(request, 'account/profile.html', {'addresses':addresses})
+    orders = Order.objects.filter(user=request.user)
+    return render(request, 'account/profile.html', {'addresses':addresses, 'orders':orders})
 
 
 @method_decorator(login_required, name='dispatch')
