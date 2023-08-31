@@ -28,19 +28,19 @@
           <h2 class="h5 text-uppercase mb-4">Billing details</h2>
           <div class="row">
             <div class="col-lg-8">
-              <form action="#">
+              <form action="/place-order/">
                 <div class="row">
                   <div class="col-lg-6 form-group">
                     <label class="text-small text-uppercase" for="firstName">First name</label>
-                    <input class="form-control form-control-lg" id="firstName" type="text" placeholder="Enter your first name">
+                    <input class="form-control form-control-lg" id="firstName" type="text" placeholder="Enter your first name" value="{{ user_details.first_name }}">
                   </div>
                   <div class="col-lg-6 form-group">
                     <label class="text-small text-uppercase" for="lastName">Last name</label>
-                    <input class="form-control form-control-lg" id="lastName" type="text" placeholder="Enter your last name">
+                    <input class="form-control form-control-lg" id="lastName" type="text" placeholder="Enter your last name" value="{{ user_details.last_name }}">
                   </div>
                   <div class="col-lg-6 form-group">
                     <label class="text-small text-uppercase" for="email">Email address</label>
-                    <input class="form-control form-control-lg" id="email" type="email" placeholder="e.g. Jason@example.com">
+                    <input class="form-control form-control-lg" id="email" type="email" placeholder="e.g. Jason@example.com" value="{{ user_details.email }}">
                   </div>
                   <div class="col-lg-6 form-group">
                     <label class="text-small text-uppercase" for="phone">Phone number</label>
@@ -135,11 +135,13 @@
                 <div class="card-body">
                   <h5 class="text-uppercase mb-4">Your order</h5>
                   <ul class="list-unstyled mb-0">
-                    <li class="d-flex align-items-center justify-content-between"><strong class="small font-weight-bold">Red digital smartwatch</strong><span class="text-muted small">$250</span></li>
-                    <li class="border-bottom my-2"></li>
-                    <li class="d-flex align-items-center justify-content-between"><strong class="small font-weight-bold">Gray Nike running shoes</strong><span class="text-muted small">$351</span></li>
-                    <li class="border-bottom my-2"></li>
-                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Total</strong><span>$601</span></li>
+                  {% for cart in cart_products %}
+                    <li class="d-flex align-items-center justify-content-between"><strong class="small font-weight-bold">{{ cart.product.title }} x {{ cart.quantity }}</strong><span class="text-muted small">{{ currency }}{{ cart.product.price }}</span></li>
+                  {% endfor %}
+                    <li class="border-bottom my-2"></li>                  
+                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Subtotal</strong><span class="text-muted small">{{ currency }}{{ cart_total.sub_total }}</span></li>
+                    <li class="d-flex align-items-center justify-content-between"><strong class="text-uppercase small font-weight-bold">Shipping Charge</strong><span class="text-muted small">+ {{ currency }}{{ cart_total.shipping_charge }}</span></li>
+                    <li class="d-flex align-items-center justify-content-between mb-4"><strong class="text-uppercase small font-weight-bold">Total</strong><span>{{ currency }}{{ cart_total.total }}</span></li>
                   </ul>
                 </div>
               </div>
