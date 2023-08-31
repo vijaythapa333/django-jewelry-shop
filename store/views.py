@@ -8,6 +8,7 @@ from django.views import View
 import decimal
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator # for Class Based Views
+from store.common_helper import cart_total_calculator
 
 
 # Create your views here.
@@ -177,19 +178,33 @@ def minus_cart(request, cart_id):
 
 @login_required
 def checkout(request):
-    user = request.user
-    address_id = request.GET.get('address')
+    current_user = request.user
+    cart_products = Cart.objects.filter(user_id=current_user.id).order_by('created_at')
     
-    address = get_object_or_404(Address, id=address_id)
+    context = {
+        'cart_products': cart_products,
+        #TODO: shipping amount
+        'cart_total': cart_total_calculator(cart_products, 10),
+        'currency': '$',
+        'user_details': current_user
+    }
+
+    return render(request, 'store/checkout.html', context)
+
+
+@login_required
+def place_order(request):
+    current_user = request.user
+    #TODO: address
+    address = get_object_or_404(Address, id=1)
     # Get all the products of User in Cart
-    cart = Cart.objects.filter(user=user)
+    cart = Cart.objects.filter(user=current_user)
     for c in cart:
         # Saving all the products from Cart to Order
-        Order(user=user, address=address, product=c.product, quantity=c.quantity).save()
+        Order(user=current_user, address=address, product=c.product, quantity=c.quantity).save()
         # And Deleting from Cart
         c.delete()
     return redirect('store:orders')
-
 
 @login_required
 def orders(request):
